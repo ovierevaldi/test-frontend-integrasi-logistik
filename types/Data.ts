@@ -163,5 +163,27 @@ export type DataPungutanProp = {
     volume: string;
     dataBank: string[];
 };
+
+export type Kurs = {
+    name: string,
+    code: keyof ExchangeRates
+};
+
+export const ListKurs : Kurs[] = [
+    {name: 'Dollar', code: 'USD'},
+    {name: 'Euro', code: 'EUR'},
+    {name: 'Singapore Dollar', code: 'SGD'}
+];
+
+export type ExchangeRates = {
+    IDR: number;
+    EUR: number;
+    USD: number;
+    SGD: number;
+};
+
+export type ConversionRates = {
+    conversion_rates: ExchangeRates;
+}
   
   

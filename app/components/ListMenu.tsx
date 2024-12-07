@@ -23,7 +23,8 @@ const ListMenu = () => {
     }
 
   return (
-    <div className='flex gap-x-16 justify-center'>
+    <div className='space-y-8'>
+        <div className='flex gap-x-16 justify-center'>
         {
             listMenu.map(menu => {
                 const IconComponent = menu.icon;
@@ -42,6 +43,11 @@ const ListMenu = () => {
                 )
             })
         }
+
+        </div>
+        <p className='text-right font-bold py-4'>
+            No Pengajuan: 20120B388FAE20240402000001
+        </p>
     </div>
   )
 }

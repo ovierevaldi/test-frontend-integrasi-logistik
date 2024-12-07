@@ -28,6 +28,7 @@ const MainTab = () => {
     
           if(!response.error){
             setData(response.data);
+            console.log(response.data)
           }
           else{
             console.log('Cannot Get Api')
@@ -39,7 +40,7 @@ const MainTab = () => {
 
     return (
         <div className='space-y-8'> 
-            <p className='text-right font-bold'>No Pengajuan: {data?.nomor_pengajuan}</p>
+           
             <p className='text-2xl font-bold mb-4'>Data Pemberitahuan</p>
             <div className="flex">
                 {

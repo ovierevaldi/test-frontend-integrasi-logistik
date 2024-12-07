@@ -8,16 +8,20 @@ export type NavMenu = {
 
 export type InputMenu = {
     label: string,
-    value: string,
-    type: 'string' | 'date' | 'number'
+    value: string | number,
+    type: 'text' | 'date' | 'number'
     disabled: boolean ,
-    placeholder?: string
+    placeholder?: string,
+    controlDisable? : boolean
 }
 
 export type SelectMenu = {
     label: string,
     value: string,
-    options: string[],
+    options?: {
+        value: string[],
+        label: string[]
+    },
     disabled: boolean ,
     basis? : string
 }
