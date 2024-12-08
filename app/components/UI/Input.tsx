@@ -2,8 +2,7 @@ import { InputMenu } from '@/types/UI_Types'
 import React, { useEffect, useState } from 'react'
 
 const Input = ({data, inputValue, checkValue} : {data: InputMenu, inputValue?: (value: string) => void, checkValue?: (value: boolean) => void }) => {
-  
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isReadOnly, setIsReadOnly] = useState(false);
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement>  = (e) => {
     if(inputValue){
@@ -12,33 +11,39 @@ const Input = ({data, inputValue, checkValue} : {data: InputMenu, inputValue?: (
   };
 
   const onChecboxValueChanged : React.ChangeEventHandler<HTMLInputElement> = (e) => {
-      setIsDisabled(!e.target.checked);
+    setIsReadOnly(!e.target.checked);
       if(checkValue){
         checkValue(e.target.checked)
       }
   };
 
   useEffect(() => {
-    setIsDisabled(data.disabled)
+    setIsReadOnly(data.readonly)
   },
-  [data.disabled])
+  [data.readonly])
 
   return (
-    <div className='flex flex-col'>
+    <div>
+      <div className='flex flex-col'>
         <div className='flex gap-x-2'>
           <span className='font-bold'>{data.label}</span>
           {
-            data.controlDisable && <input type='checkbox' onChange={onChecboxValueChanged}></input>
+            data.controlReadonly && <input type='checkbox' onChange={onChecboxValueChanged}></input>
           }
         </div>
         <input 
             type={data.type}
             value={data.value}
-            onChange={isDisabled ? () => {} : onInputChange}
-            disabled={isDisabled}
+            name={data.name}
+            onChange={isReadOnly ? () => {} : onInputChange}
+            readOnly={isReadOnly}
             placeholder={data.placeholder}
-            className='p-2 disabled:bg-gray-300 rounded border-2'
+            className={`p-2 read-only:bg-gray-200 rounded border-2 ${data.error?.isError ? 'border-red-500' : ''}`}
         />
+      </div>
+      {
+        data.error?.isError && <p className='text-sm text-red-500'>{data.error.message}</p>
+      }
     </div>
   )
 }
