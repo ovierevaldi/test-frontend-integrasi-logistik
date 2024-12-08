@@ -12,7 +12,7 @@ export type InputMenu = {
     type: 'text' | 'date' | 'number'
     readonly: boolean ,
     placeholder?: string,
-    controlDisable? : boolean,
+    controlReadonly? : boolean,
     name?: string,
 
     error? : {

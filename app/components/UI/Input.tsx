@@ -28,7 +28,7 @@ const Input = ({data, inputValue, checkValue} : {data: InputMenu, inputValue?: (
         <div className='flex gap-x-2'>
           <span className='font-bold'>{data.label}</span>
           {
-            data.controlDisable && <input type='checkbox' onChange={onChecboxValueChanged}></input>
+            data.controlReadonly && <input type='checkbox' onChange={onChecboxValueChanged}></input>
           }
         </div>
         <input 
@@ -38,7 +38,7 @@ const Input = ({data, inputValue, checkValue} : {data: InputMenu, inputValue?: (
             onChange={isReadOnly ? () => {} : onInputChange}
             readOnly={isReadOnly}
             placeholder={data.placeholder}
-            className={`p-2 disabled:bg-gray-300 rounded border-2 ${data.error?.isError ? 'border-red-500' : ''}`}
+            className={`p-2 read-only:bg-gray-200 rounded border-2 ${data.error?.isError ? 'border-red-500' : ''}`}
         />
       </div>
       {

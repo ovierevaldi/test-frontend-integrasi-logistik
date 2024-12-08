@@ -143,7 +143,7 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
       </div>
 
       <Input 
-        data={{label: `Voluntary Declaration ${selectedKurs.code}`, readonly: false, type: 'number', value: voluntaryDeclaration, controlDisable: true }}
+        data={{label: `Voluntary Declaration ${selectedKurs.code}`, readonly: true, type: 'number', value: voluntaryDeclaration, controlReadonly: true }}
         inputValue={(e) => {setVoluntaryDeclaration(+e)}}
       />
       <div className='flex items-center text-xl font-bold'>
@@ -169,7 +169,7 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
 
     <div className='flex gap-x-4 justify-center'>
         {/* <TabButton disabled={false} handleBtnClick={cekKelengkapanData} bgColor='yellow' textColor='true'>Kelengkapan Data</TabButton> */}
-        <TabButton type='submit' disabled={false} handleBtnClick={() => {}} bgColor='blue' textColor='true'>Simpan</TabButton>
+        {/* <TabButton type='submit' disabled={false} handleBtnClick={() => {}} bgColor='blue' textColor='true'>Simpan</TabButton> */}
     </div>
   </div> 
   : <p>Please Enter id_aju</p>

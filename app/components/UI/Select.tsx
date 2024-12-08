@@ -13,7 +13,7 @@ const Select = ({data, valueChanged} : {data: SelectMenu, valueChanged?: (new_va
         <span className='font-bold'>{data.label}</span>
         <select 
             aria-readonly={data.readonly}
-            className='p-2 disabled:bg-gray-300 rounded border-2'
+            className='p-2 read-only:bg-gray-200 rounded border-2'
             onChange={onSelectValueChange}
             name={data.name}
             value={data.value}
