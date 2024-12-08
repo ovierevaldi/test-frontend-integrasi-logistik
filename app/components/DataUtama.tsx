@@ -4,7 +4,7 @@ import Select from './UI/Select'
 import Loading from './UI/Loading'
 import { useEffect, useRef, useState } from 'react'
 import RandomButton from './RandomButton'
-import {generateUUID, getDateInString} from '@/libs/helper'
+import {generateUUID} from '@/libs/helper'
 import zodValidation, { DataPemberitahuanSchemaProp, ErrorDataPemberitahuanSchema } from '@/libs/zod-validations'
 
 type DataUtamaPageProp = {
