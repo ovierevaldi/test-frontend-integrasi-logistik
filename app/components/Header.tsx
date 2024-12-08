@@ -1,7 +1,7 @@
 import React from 'react'
 import reactLogo from '@/public/react-1-logo-svgrepo-com.svg';
 import Image from 'next/image';
-import Clock from './Clock';
+// import Clock from './Clock';
 import { RiNotification2Line } from "react-icons/ri";
 import { FaRunning } from "react-icons/fa";
 import { BiHomeAlt } from "react-icons/bi";

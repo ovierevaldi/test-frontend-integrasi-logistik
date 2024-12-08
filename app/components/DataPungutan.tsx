@@ -2,12 +2,11 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import ApiProvider from '@/libs/api-provider';
-import { ConversionRates, DataPungutanProp, ExchangeRates, Kurs, ListKurs } from '@/types/Data';
+import { ConversionRates, DataPungutanProp, Kurs, ListKurs } from '@/types/Data';
 import Input from './Input';
 import Select from './Select';
 import RandomButton from './RandomButton';
 import { ConvertCurrency } from '@/libs/helper';
-import TabButton from './TabButton';
 
 const DataPungutan = ({id_aju} : {id_aju: string | undefined}) => {
   const [data, setData] = useState<DataPungutanProp>();
@@ -19,8 +18,6 @@ const DataPungutan = ({id_aju} : {id_aju: string | undefined}) => {
   const [nilaiCIF, setNilaiCIF] = useState(0);
   const [CIFInRp, setCIFInRP] = useState(0);
   const isFirstRender = useRef(true);
-  const isFirstRender2 = useRef(true);
-  const [defaultData, setDefaultData] = useState<DataPungutanProp>();
 
   useEffect(() => {
     const getDataUtama = async () => {
@@ -90,31 +87,6 @@ const DataPungutan = ({id_aju} : {id_aju: string | undefined}) => {
   const hitungCIF =  (fob: number, nilai_asuransi: number, freight: number) => {
     setNilaiCIF(fob + nilai_asuransi + freight);
   };
-
-  useEffect(() => {
-    const convertValuta = async () => {
-      const kursData = await ApiProvider.getExchangeRate(selectedKurs.code) as ConversionRates;
-      setData((prev) => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          nilai_incoterm: (Number(defaultData?.nilai_incoterm) * kursData.conversion_rates.EUR).toString(),
-          biaya_tambahan: (Number(defaultData?.biaya_tambahan) * kursData.conversion_rates.EUR).toString(),
-          biaya_pengurang: (Number(defaultData?.biaya_pengurang) * kursData.conversion_rates.EUR).toString(),
-        };
-      });
-    };
-
-    // convertValuta();
-  }, [])
-
-  const cekKelengkapanData = () => {
-
-  };
-
-  const simpanData = () => {
-
-  }
 
   return id_aju ? 
   <div className='space-y-8'>

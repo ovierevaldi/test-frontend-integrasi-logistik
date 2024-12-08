@@ -50,7 +50,7 @@ const MainTab = ({id_aju} : {id_aju: string}) => {
         };
 
         getDataUtama();
-      }, []);
+      }, [id_aju]);
 
     return (
         <div className='space-y-4'> 
