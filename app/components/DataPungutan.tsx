@@ -143,7 +143,7 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
       </div>
 
       <Input 
-        data={{label: `Voluntary Declaration ${selectedKurs.code}`, readonly: true, type: 'number', value: voluntaryDeclaration, controlDisable: true }}
+        data={{label: `Voluntary Declaration ${selectedKurs.code}`, readonly: false, type: 'number', value: voluntaryDeclaration, controlDisable: true }}
         inputValue={(e) => {setVoluntaryDeclaration(+e)}}
       />
       <div className='flex items-center text-xl font-bold'>
