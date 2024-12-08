@@ -1,10 +1,10 @@
 'use client'
 
-import MainTab from "./components/MainTab";
-import ListMenu from "./components/ListMenu";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import { useParams } from "next/navigation";
+import MainTab from "../components/MainTab";
+import ListMenu from "../components/ListMenu";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function Home() {
   const params = useParams<{id_aju: string}>();

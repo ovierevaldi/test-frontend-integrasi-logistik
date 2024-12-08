@@ -181,10 +181,10 @@ const DataPungutan = ({id_aju} : {id_aju: string | undefined}) => {
       <Input data={{label: 'Flag Kontainer', disabled: true, type: 'text', value: data?.ur_flag_curah || ''}}/>
     </div>
 
-    <div className='flex gap-x-4 justify-center'>
+    {/* <div className='flex gap-x-4 justify-center'>
         <TabButton disabled={false} handleBtnClick={cekKelengkapanData} bgColor='yellow' textColor='true'>Kelengkapan Data</TabButton>
         <TabButton disabled={false} handleBtnClick={simpanData} bgColor='blue' textColor='true'>Simpan</TabButton>
-    </div>
+    </div> */}
   </div> 
   : <p>Please Enter id_aju</p>
 }

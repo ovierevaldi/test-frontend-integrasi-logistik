@@ -45,9 +45,6 @@ const ListMenu = () => {
         }
 
         </div>
-        <p className='text-right font-bold py-4'>
-            No Pengajuan: 20120B388FAE20240402000001
-        </p>
     </div>
   )
 }

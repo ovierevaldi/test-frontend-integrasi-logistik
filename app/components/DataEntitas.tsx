@@ -36,7 +36,7 @@ const DataEntitas = ({id_aju} : {id_aju: string | undefined}) => {
      <Select data={{label: 'Jenis Pemberitahuan', disabled: true, value: data?.ur_entitas_pemberitahu || ''}}></Select>
 
     <p className='text-2xl font-bold'>Data Entitas</p>
-    <div className='flex gap-x-8'>
+    <div className='flex gap-x-8 flex-wrap'>
       <Select 
         data={{label: 'Jenis Identitas', disabled: false, value: selectedEntitas || '', options: {label: Object.values(JenisEntitas).map((value) => {
           return value === 'penanggungjawab' ? 'penanggung jawab'.toUpperCase() : value.toUpperCase();
@@ -61,7 +61,7 @@ const DataEntitas = ({id_aju} : {id_aju: string | undefined}) => {
       <Input data={{label: 'RT / RW', disabled: true, type: 'text', value: data?.[selectedEntitas]?.rt_rw || ''}}/>
     </div>
 
-    <div className='flex gap-x-8'>
+    <div className='flex gap-x-8 flex-wrap gap-y-4'>
       <Input data={{label: 'Telephone', disabled: true, type: 'text', value: data?.[selectedEntitas].tlp_identitas || ''}}/>
       <Input data={{label: 'Email', disabled: true, type: 'text', value: data?.[selectedEntitas].email_identitas || ''}}/>
       <Input data={{label: 'Status', disabled: true, type: 'text', value: data?.[selectedEntitas].status || ''}}/>
