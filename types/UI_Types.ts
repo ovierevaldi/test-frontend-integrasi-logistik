@@ -10,9 +10,15 @@ export type InputMenu = {
     label: string,
     value: string | number,
     type: 'text' | 'date' | 'number'
-    disabled: boolean ,
+    readonly: boolean ,
     placeholder?: string,
-    controlDisable? : boolean
+    controlDisable? : boolean,
+    name?: string,
+
+    error? : {
+        isError: boolean,
+        message: string
+    }
 }
 
 export type SelectMenu = {
@@ -22,6 +28,7 @@ export type SelectMenu = {
         value: string[],
         label: string[]
     },
-    disabled: boolean ,
-    basis? : string
+    readonly: boolean,
+    basis? : string,
+    name?: string
 }

@@ -5,10 +5,11 @@ type TabButtonProp = {
     disabled: boolean, 
     handleBtnClick: () => void,
     bgColor?: string, 
-    textColor?: string 
+    textColor?: string,
+    type?: 'button' | 'submit';
 }
 
-const TabButton = ({children, disabled, handleBtnClick, bgColor, textColor} : TabButtonProp) => {
+const TabButton = ({children, disabled, handleBtnClick, bgColor, textColor, type = 'button'} : TabButtonProp) => {
     const onBtnClick = () => {
         handleBtnClick();
     }
@@ -16,6 +17,7 @@ const TabButton = ({children, disabled, handleBtnClick, bgColor, textColor} : Ta
     <button
         onClick={onBtnClick}
         disabled={disabled}
+        type={type}
         className={`p-2 border-blue-500 rounded-lg text-blue-500 hover:text-white disabled:border-gray-500 disabled:text-gray-500 ${disabled ? '' : 'hover:bg-blue-500 '} ${bgColor === 'yellow' ? `bg-yellow-500 border-0` : bgColor === 'blue' ? 'bg-blue-500 border-0' : 'border-2'} ${textColor ? 'text-white': ''} `}>
         {children}
     </button>
