@@ -89,13 +89,13 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
                 return;
   
               return {...prev, 
-                nilai_incoterm: (Number(defaultData.nilai_incoterm) + (Number(defaultData.nilai_incoterm) - defaultKursValue * Number(defaultData?.nilai_incoterm))).toString(),
-                biaya_tambahan: (defaultKursValue * Number(defaultData?.biaya_tambahan)).toString(),
-                biaya_pengurang: (defaultKursValue * Number(defaultData?.biaya_pengurang)).toString(),
-                nilai_asuransi: (defaultKursValue * Number(defaultData?.nilai_asuransi)).toString(),
-                freight: (defaultKursValue * Number(defaultData?.freight)).toString(),
-                berat_bersih: (defaultKursValue * Number(defaultData?.berat_bersih)).toString(),
-                berat_kotor: (defaultKursValue * Number(defaultData?.berat_kotor)).toString(),
+                nilai_incoterm: convertValuta(Number(defaultData.nilai_incoterm), defaultKursValue).toString(),
+                biaya_tambahan: convertValuta(Number(defaultData.biaya_tambahan), defaultKursValue).toString(),
+                biaya_pengurang: convertValuta(Number(defaultData.biaya_pengurang), defaultKursValue).toString(),
+                nilai_asuransi: convertValuta(Number(defaultData.nilai_asuransi), defaultKursValue).toString(),
+                freight: convertValuta(Number(defaultData.freight), defaultKursValue).toString(),
+                berat_bersih: convertValuta(Number(defaultData.berat_bersih), defaultKursValue).toString(),
+                berat_kotor: convertValuta(Number(defaultData.berat_kotor), defaultKursValue).toString(),
               }
             })
           }
@@ -135,6 +135,10 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
   const hitungCIF =  (fob: number, nilai_asuransi: number, freight: number) => {
     setNilaiCIF(fob + nilai_asuransi + freight);
   };
+
+  const convertValuta = (base_value: number, kursValue: number) => {
+    return (base_value + (base_value - kursValue * base_value)).toString()
+  }
 
   return id_aju ? 
   <div>
@@ -182,7 +186,7 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
         </div>
 
         <Input 
-          data={{label: `Voluntary Declaration ${selectedKurs.code}`, readonly: true, type: 'number', value: voluntaryDeclaration, controlReadonly: true }}
+          data={{label: `Voluntary Declaration (${selectedKurs.code})`, readonly: true, type: 'number', value: voluntaryDeclaration, controlReadonly: true }}
           inputValue={(e) => {setVoluntaryDeclaration(+e)}}
         />
         <div className='flex items-center text-xl font-bold'>
