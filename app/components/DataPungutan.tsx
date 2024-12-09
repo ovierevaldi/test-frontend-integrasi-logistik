@@ -1,7 +1,7 @@
 'use client'
 
 import ApiProvider from "@/libs/api-provider";
-import { ConversionRates, DataPungutanProp, ExchangeRates, Kurs, ListKurs } from "@/types/Data";
+import { ConversionRates, DataPungutanProp, Kurs, ListKurs } from "@/types/Data";
 import { useEffect, useRef, useState } from "react";
 import Loading from "./UI/Loading";
 import Input from "./UI/Input";
@@ -11,11 +11,11 @@ import { ConvertCurrency } from "@/libs/helper";
 
 type DataPungutanPageProp =  {
   id_aju: string | undefined,
-  onSubmit: boolean,
-  canNext: (state: boolean) => void
+  onSubmit?: boolean,
+  canNext?: (state: boolean) => void
 };
 
-const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
+const DataPungutan = ({id_aju} : DataPungutanPageProp) => {
   const [data, setData] = useState<DataPungutanProp>();
   const [isFetchingApi, setIsFetchingApi] = useState(false);
   const [isErrorApi, setIsErrorApi] = useState(false);
@@ -58,7 +58,7 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
       }
     };
     getDataPungutan();
-  }, []);
+  }, [id_aju]);
 
   useEffect(() => {
     if (isFirstRender.current) {
