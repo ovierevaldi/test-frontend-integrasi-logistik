@@ -38,10 +38,9 @@ const DataEntitas = ({id_aju, onSubmit, canNext} :DataEntitasPageProp) => {
 
   useEffect(() => {
     if(onSubmit){
-      console.log(onSubmit)
       canNext(true)
     }
-  }, [onSubmit]);
+  }, [onSubmit, canNext]);
 
   return id_aju ? 
   <div className='space-y-8'>

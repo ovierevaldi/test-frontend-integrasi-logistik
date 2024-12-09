@@ -27,7 +27,7 @@ const DataUtama = ({data, onSubmit, canNext} : DataUtamaPageProp) => {
         canNext(result)
       }
     }
-  }, [onSubmit]);
+  }, [onSubmit, canNext]);
 
   const checkForm = (form: HTMLFormElement) => {
     const formData = new FormData(form);
