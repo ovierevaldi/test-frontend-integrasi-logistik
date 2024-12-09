@@ -1,7 +1,7 @@
 'use client'
 
 import ApiProvider from "@/libs/api-provider";
-import { ConversionRates, DataPungutanProp, Kurs, ListKurs } from "@/types/Data";
+import { ConversionRates, DataPungutanProp, ExchangeRates, Kurs, ListKurs } from "@/types/Data";
 import { useEffect, useRef, useState } from "react";
 import Loading from "./UI/Loading";
 import Input from "./UI/Input";
@@ -27,6 +27,8 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
   const [nilaiKursIDR, setNilaiKursIDR] = useState(0);
   const [refetchKurs, setRefetchKurs] = useState(0);
   const isFirstRender = useRef(true);
+  const [isFetchingKurs, setIsFetchingKurs] = useState(false);
+  const [defaultData, setDefaulData] = useState<DataPungutanProp>();
   
   useEffect(() => {
     const getDataPungutan = async () => {
@@ -34,8 +36,18 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
         setIsFetchingApi(true);
 
         const response = await ApiProvider.getDataPungutan(id_aju);
+        const data = response.data as DataPungutanProp;
+
         if(!response.error){
-          setData(response.data as DataPungutanProp)
+          setDefaulData(data);
+          setData(data);
+
+          if(data?.kd_valuta){
+            const kurs = ListKurs.find((value) => value.code === data.kd_valuta);
+            if(kurs){
+              setSelectedKurs(kurs);
+            };
+          };
         }
         else{
           setIsErrorApi(true);
@@ -55,38 +67,64 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
     }
 
     const getKurs = async () => {
+      setIsFetchingKurs(true);
+
       const response = await ApiProvider.getExchangeRate(selectedKurs.code);
 
       if(!response.error){
-        const data = response as ConversionRates;
+        const rates = response as ConversionRates;
         
         setNilaiKursIDR(() => {
-          const idrRates = data.conversion_rates.IDR;
+          const idrRates = rates.conversion_rates.IDR;
           setCIFInRP(nilaiCIF * idrRates);
           return idrRates;
         });
+
+        if(defaultData){
+          if(defaultData?.kd_valuta !== selectedKurs.code){
+            const defaultKursValue = rates.conversion_rates[defaultData.kd_valuta as keyof typeof rates.conversion_rates];
+            setData((prev) => {
+              
+              if(!prev)
+                return;
+  
+              return {...prev, 
+                nilai_incoterm: (Number(defaultData.nilai_incoterm) + (Number(defaultData.nilai_incoterm) - defaultKursValue * Number(defaultData?.nilai_incoterm))).toString(),
+                biaya_tambahan: (defaultKursValue * Number(defaultData?.biaya_tambahan)).toString(),
+                biaya_pengurang: (defaultKursValue * Number(defaultData?.biaya_pengurang)).toString(),
+                nilai_asuransi: (defaultKursValue * Number(defaultData?.nilai_asuransi)).toString(),
+                freight: (defaultKursValue * Number(defaultData?.freight)).toString(),
+                berat_bersih: (defaultKursValue * Number(defaultData?.berat_bersih)).toString(),
+                berat_kotor: (defaultKursValue * Number(defaultData?.berat_kotor)).toString(),
+              }
+            })
+          }
+          else{
+            setData(() => {
+              return {...defaultData}
+            })
+          }
+        }
       }
       else{
         console.log('Cannot Get Api')
-      }
+      };
+
+      setIsFetchingKurs(false);
     };
 
     getKurs();
-  }, [refetchKurs, selectedKurs])
+  }, [refetchKurs, selectedKurs]);
 
   useEffect(() => {
-    if(data?.kd_valuta){
-      const kurs = ListKurs.find((value) => value.code === data.kd_valuta);
-      if(kurs){
-        setSelectedKurs(kurs);  
-      };
-    };
-
     const hasilFOB = hitungFOB(Number(data?.nilai_incoterm), Number(data?.biaya_tambahan), Number(data?.biaya_pengurang), voluntaryDeclaration);
     hitungCIF(hasilFOB, Number(data?.nilai_asuransi), Number(data?.freight));
-    setCIFInRP(nilaiCIF * nilaiKursIDR);
 
   }, [data, voluntaryDeclaration]);
+
+  useEffect(() => {
+    setCIFInRP(nilaiCIF * nilaiKursIDR);
+  }, [nilaiCIF, nilaiKursIDR])
 
   const hitungFOB = (nilai: number, biaya_tambahan: number, biaya_pengurang: number, voluntaryDeclaration: number) => {
     const hasil = (nilai + biaya_tambahan) - (biaya_pengurang + voluntaryDeclaration);
@@ -107,7 +145,7 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
         <Input data={{label: 'Incoterms', readonly: true, type: 'text', value: data?.ur_incoterm || ''}}/>
 
         <Select 
-          data={{label: 'Valuta', readonly: true, value: selectedKurs.code, 
+          data={{label: 'Valuta', readonly: false, value: selectedKurs.code, 
           options: {label: ListKurs.map(value => value.name), value: ListKurs.map(value => value.code)}}}
           valueChanged={(e) => {
             const kurs = ListKurs.find(value => value.code === e);
@@ -117,12 +155,14 @@ const DataPungutan = ({id_aju, onSubmit, canNext} : DataPungutanPageProp) => {
           }}>
         </Select>
 
-        <div className='flex gap-x-4 items-center'>
+        {
+          !isFetchingKurs ? <div className='flex gap-x-4 items-center'>
           <Input data={{label: 'Kurs', readonly: true, type: 'text', value: ConvertCurrency('IDR', nilaiKursIDR)}}/>
           <div className='h-fit translate-y-1/3'>
             <RandomButton onBtnClick={() => setRefetchKurs(refetchKurs + 1)} />
           </div>
-        </div>
+        </div> : <Loading />
+        }
       </div>
 
       <div className='flex gap-x-8 flex-wrap gap-y-4'>
