@@ -12,7 +12,11 @@ import { ConvertCurrency } from "@/libs/helper";
 type DataPungutanPageProp =  {
   id_aju: string | undefined,
   onSubmit?: boolean,
-  canNext: (state: boolean, data: {}) => void
+  canNext: (state: boolean, data: {nilai_fob: number,
+    nilai_cif: number,
+    cif_in_rp: number,
+    voluntaryDeclaration: number,
+    valuta_code: string,}) => void
 };
 
 const DataPungutan = ({id_aju, canNext} : DataPungutanPageProp) => {
@@ -115,7 +119,7 @@ const DataPungutan = ({id_aju, canNext} : DataPungutanPageProp) => {
     };
 
     getKurs();
-  }, [refetchKurs, selectedKurs]);
+  }, [refetchKurs, selectedKurs, defaultData, nilaiCIF]);
 
   useEffect(() => {
     const hasilFOB = hitungFOB(Number(data?.nilai_incoterm), Number(data?.biaya_tambahan), Number(data?.biaya_pengurang), voluntaryDeclaration);

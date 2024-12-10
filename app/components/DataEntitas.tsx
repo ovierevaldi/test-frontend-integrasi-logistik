@@ -11,7 +11,7 @@ import { JenisEntitas } from '@/types/enums'
 type DataEntitasPageProp =  {
   id_aju: string | undefined,
   onSubmit: boolean,
-  canNext: (state: boolean, data: {}) => void
+  canNext: (state: boolean, data: {npwp_pengaju: string, ur_entitas_pemberitahu: string}) => void
 }
 
 const DataEntitas = ({id_aju, onSubmit, canNext} :DataEntitasPageProp) => {
@@ -38,9 +38,9 @@ const DataEntitas = ({id_aju, onSubmit, canNext} :DataEntitasPageProp) => {
 
   useEffect(() => {
     if(onSubmit){
-      canNext(true, {npwp_pengaju: data?.npwp_pengaju, ur_entitas_pemberitahu: data?.ur_entitas_pemberitahu})
+      canNext(true, {npwp_pengaju: data?.npwp_pengaju || '',  ur_entitas_pemberitahu: data?.ur_entitas_pemberitahu || ''})
     }
-  }, [onSubmit, canNext]);
+  }, [onSubmit, canNext, data?.npwp_pengaju, data?.ur_entitas_pemberitahu]);
 
   return id_aju ? 
   <div className='space-y-8'>

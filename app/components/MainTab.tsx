@@ -84,30 +84,6 @@ const MainTab = ({id_aju} : {id_aju: string}) => {
         getDataUtama();
     }, [id_aju]);
 
-    useEffect(() => {
-        if(canSaveData){
-            postData();
-        }
-    }, [canSaveData])
-
-    const changeNavState = (state : NavState) => {
-        if(!isNoData){
-            setCurrentState(state)
-        }
-    };
-
-    const onNextBtnClicked = (state: NavState) => {
-        
-        if(state === NavState.UTAMA)
-            return setIsSubmit1(true);
-        
-        if(state === NavState.ENTITAS)
-            return setIsSubmit2(true);
-
-        if(state === NavState.PUNGUTAN)
-            return setIsSubmit3(true);
-    }
-
     const postData = async () => {
         try {
             const currentData = await ApiProvider.getDataReportByNomorPengajuan(savedData.nomor_pengajuan);
@@ -132,9 +108,36 @@ const MainTab = ({id_aju} : {id_aju: string}) => {
     
             }
         } catch (error) {
+            console.log(error);
             toast.error('Cannot Save Data');            
         }
     }
+
+    useEffect(() => {
+        if(canSaveData){
+            postData();
+        }
+    }, [canSaveData, postData])
+
+    const changeNavState = (state : NavState) => {
+        if(!isNoData){
+            setCurrentState(state)
+        }
+    };
+
+    const onNextBtnClicked = (state: NavState) => {
+        
+        if(state === NavState.UTAMA)
+            return setIsSubmit1(true);
+        
+        if(state === NavState.ENTITAS)
+            return setIsSubmit2(true);
+
+        if(state === NavState.PUNGUTAN)
+            return setIsSubmit3(true);
+    }
+
+   
 
     return (
         <div className='space-y-4'> 
