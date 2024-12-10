@@ -12,10 +12,14 @@ import { ConvertCurrency } from "@/libs/helper";
 type DataPungutanPageProp =  {
   id_aju: string | undefined,
   onSubmit?: boolean,
-  canNext?: (state: boolean) => void
+  canNext: (state: boolean, data: {nilai_fob: number,
+    nilai_cif: number,
+    cif_in_rp: number,
+    voluntaryDeclaration: number,
+    valuta_code: string,}) => void
 };
 
-const DataPungutan = ({id_aju} : DataPungutanPageProp) => {
+const DataPungutan = ({id_aju, canNext} : DataPungutanPageProp) => {
   const [data, setData] = useState<DataPungutanProp>();
   const [isFetchingApi, setIsFetchingApi] = useState(false);
   const [isErrorApi, setIsErrorApi] = useState(false);
@@ -59,6 +63,7 @@ const DataPungutan = ({id_aju} : DataPungutanPageProp) => {
     };
     getDataPungutan();
   }, [id_aju]);
+
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -114,7 +119,7 @@ const DataPungutan = ({id_aju} : DataPungutanPageProp) => {
     };
 
     getKurs();
-  }, [refetchKurs, selectedKurs]);
+  }, [refetchKurs, selectedKurs, defaultData, nilaiCIF]);
 
   useEffect(() => {
     const hasilFOB = hitungFOB(Number(data?.nilai_incoterm), Number(data?.biaya_tambahan), Number(data?.biaya_pengurang), voluntaryDeclaration);
@@ -124,7 +129,18 @@ const DataPungutan = ({id_aju} : DataPungutanPageProp) => {
 
   useEffect(() => {
     setCIFInRP(nilaiCIF * nilaiKursIDR);
-  }, [nilaiCIF, nilaiKursIDR])
+  }, [nilaiCIF, nilaiKursIDR]);
+
+  const simpanData = () => {
+    const data = {
+      nilai_fob: nilaiFOB,
+      nilai_cif: nilaiCIF,
+      cif_in_rp: CIFInRp,
+      voluntaryDeclaration: voluntaryDeclaration,
+      valuta_code: selectedKurs.code,
+    }
+    canNext(true, data);
+  }
 
   const hitungFOB = (nilai: number, biaya_tambahan: number, biaya_pengurang: number, voluntaryDeclaration: number) => {
     const hasil = (nilai + biaya_tambahan) - (biaya_pengurang + voluntaryDeclaration);
@@ -211,6 +227,11 @@ const DataPungutan = ({id_aju} : DataPungutanPageProp) => {
         <Input data={{label: 'Flag Kontainer', readonly: true, type: 'text', value: data?.ur_flag_curah || ''}}/>
       </div>
 
+        <div className="flex justify-center">
+          <button 
+            onClick={simpanData}
+            className="p-2 bg-yellow-500 text-white rounded hover:bg-white hover:border hover:border-yellow-500 hover:text-yellow-500">Simpan Data</button>
+        </div>
     </div>
     }
     {

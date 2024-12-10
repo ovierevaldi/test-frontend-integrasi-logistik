@@ -184,6 +184,19 @@ export type ExchangeRates = {
 
 export type ConversionRates = {
     conversion_rates: ExchangeRates;
+};
+
+export type DataUtamaReport = {
+    nomor_pengajuan: string;
+    nomor_pendaftaran: string;
+    tanggal_pendaftaran: string;
+    npwp_pengaju: string;
+    ur_entitas_pemberitahu: string;
+    nilai_fob: number;
+    nilai_cif: number;
+    cif_in_rp:number;
+    voluntaryDeclaration: number;
+    valuta_code: string;
 }
   
   

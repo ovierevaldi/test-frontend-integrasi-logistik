@@ -10,7 +10,7 @@ import zodValidation, { DataPemberitahuanSchemaProp, ErrorDataPemberitahuanSchem
 type DataUtamaPageProp = {
   data: DataUtamaProp | undefined,
   onSubmit: boolean,
-  canNext: (state: boolean) => void;
+  canNext: (state: boolean, data: {nomor_pengajuan: string, nomor_pendaftaran: string, tanggal_pendaftaran: string}) => void;
 }
 
 const DataUtama = ({data, onSubmit, canNext} : DataUtamaPageProp) => {
@@ -24,12 +24,12 @@ const DataUtama = ({data, onSubmit, canNext} : DataUtamaPageProp) => {
     if(onSubmit){
       if(formRef.current){
         const result = checkForm(formRef.current);
-        canNext(result)
+        canNext(result.result, result.data as {nomor_pengajuan: string, nomor_pendaftaran: string, tanggal_pendaftaran: string})
       }
     }
   }, [onSubmit, canNext]);
 
-  const checkForm = (form: HTMLFormElement) => {
+  const checkForm = (form: HTMLFormElement): {result: boolean, data: {nomor_pengajuan: string, nomor_pendaftaran: string, tanggal_pendaftaran: string}} => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     const validationResult = zodValidation().parseDataPemberitahuan(data as DataPemberitahuanSchemaProp);
@@ -39,12 +39,11 @@ const DataUtama = ({data, onSubmit, canNext} : DataUtamaPageProp) => {
         const listErr = validationResult.error.flatten().fieldErrors as ErrorDataPemberitahuanSchema;
         return {...prev, ...listErr}
       });
-      return false;
+      return {result: false, data: {nomor_pendaftaran: '', nomor_pengajuan: '', tanggal_pendaftaran: ''}};
     }
     else{
       setErrorForm({nomor_pendaftaran: [], tanggal_pendaftaran: []});
-
-      return true;
+      return {result: true, data: {nomor_pengajuan: validationResult.data.nomor_pengajuan, nomor_pendaftaran: validationResult.data.nomor_pendaftaran, tanggal_pendaftaran: validationResult.data.tanggal_pendaftaran }};
     }
   }
 
