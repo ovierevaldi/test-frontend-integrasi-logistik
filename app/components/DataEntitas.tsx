@@ -11,7 +11,7 @@ import { JenisEntitas } from '@/types/enums'
 type DataEntitasPageProp =  {
   id_aju: string | undefined,
   onSubmit: boolean,
-  canNext: (state: boolean) => void
+  canNext: (state: boolean, data: {}) => void
 }
 
 const DataEntitas = ({id_aju, onSubmit, canNext} :DataEntitasPageProp) => {
@@ -38,7 +38,7 @@ const DataEntitas = ({id_aju, onSubmit, canNext} :DataEntitasPageProp) => {
 
   useEffect(() => {
     if(onSubmit){
-      canNext(true)
+      canNext(true, {npwp_pengaju: data?.npwp_pengaju, ur_entitas_pemberitahu: data?.ur_entitas_pemberitahu})
     }
   }, [onSubmit, canNext]);
 
